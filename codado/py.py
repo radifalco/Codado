@@ -160,6 +160,7 @@ class fromdir(object):
     """
     def __init__(self, *paths):
         paths = list(paths)
+        self._origDir = []
         self.path = ''
         for cur in paths:
             cur = os.path.expanduser(cur)
@@ -173,12 +174,12 @@ class fromdir(object):
         return os.path.join(*a)
 
     def __enter__(self):
-        self._origDir = os.getcwd()
+        self._origDir.append(os.getcwd())
         os.chdir(self.path)
         return self
 
     def __exit__(self, type, value, tb):
-        os.chdir(self._origDir)
+        os.chdir(self._origDir.pop())
 
 
 def remoji():

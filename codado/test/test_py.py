@@ -51,6 +51,21 @@ def test_fromdir():
     assert py.fromdir('~')() == os.environ['HOME']
 
 
+def test_fromdirNesting():
+    """
+    Test an unrecommended but possible nesting of the same context manager instance.
+    """
+
+    startingCwd = os.getcwd()
+
+    testDir = py.fromdir('..')
+    with testDir:
+        with testDir:
+            pass
+
+    assert startingCwd == os.getcwd()
+
+
 def test_enum():
     """
     Do I permit attribute access to keys?
